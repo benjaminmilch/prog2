@@ -2,12 +2,14 @@
 #define PROG2_MYSERIALSERVER_H
 
 #include "Server.h"
+#include "GeneralServer.h"
 
 using namespace server_side;
 
-class MySerialServer : Server {
+class MySerialServer : public GeneralServer {
 public:
-    void open(int port, ClientHandler c) override;
+    void open(int port, ClientHandler *c) override;
+
     void close() override;
 };
 

@@ -7,13 +7,20 @@
 
 using namespace std;
 
-template <class Problem, class Solution>
-class FileCacheManager : public CacheManager <Problem, Solution> {
-    map<Problem, Solution> m_ps_map;
+class FileCacheManager : public CacheManager<string, string> {
+    map<string, string> m_ps_map;
 public:
-    bool isSolutionExist(Problem p);
-    Solution getSolution(Problem p);
-    void saveSolution(Problem p, Solution s);
+    FileCacheManager();
+
+    virtual bool isSolutionExist(const string p) const;
+
+    virtual string getSolution(const string p) const;
+
+    virtual void saveSolution(const string p, const string s);
+
+    virtual void save();
+
+    ~FileCacheManager();
 };
 
 

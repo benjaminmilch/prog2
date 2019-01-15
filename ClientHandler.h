@@ -7,7 +7,7 @@ using namespace std;
 
 class ClientHandler {
 public:
-    virtual void handleClient(istream input, ostream output) = 0;
+    virtual void handleClient(int sock) = 0;
 };
 
 #endif //PROG2_CLIENTHANDLER_H

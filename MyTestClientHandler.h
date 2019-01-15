@@ -5,13 +5,13 @@
 #include "CacheManager.h"
 #include "Solver.h"
 
-template <class Problem, class Solution>
-class MyTestClientHandler : ClientHandler {
-    Solver<Problem, Solution> m_solver;
-    CacheManager<Problem, Solution> m_manager;
+
+class MyTestClientHandler : public ClientHandler {
+    Solver<string, string>* m_solver;
+    CacheManager<string, string>* m_manager;
 public:
-    MyTestClientHandler(Solver<Problem, Solution> solver, CacheManager<Problem, Solution> manager);
-    void handleClient(istream input, ostream output) override;
+    MyTestClientHandler(Solver<string, string> *solver, CacheManager<string, string> *manager);
+    void handleClient(int sock) override;
 };
 
 #endif //PROG2_MYTESTCLIENTHANDLER_H
