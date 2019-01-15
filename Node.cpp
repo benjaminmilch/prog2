@@ -4,6 +4,8 @@ template <class T>
 Node<T>::Node(T node)
 {
     m_node = node;
+    m_cost = 0;
+    m_previous = nullptr;
 }
 
 template <class T>

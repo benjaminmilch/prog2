@@ -1,13 +1,15 @@
 #include "DepthSearcher.h"
-#include <list>
 
 template <class T>
-list<Node<T>*>* DepthSearcher<T>::search(Searchable<T> *searchable)
+DepthSearcher<T>::DepthSearcher(Searchable<T> *s) : GeneralSearcher<T>(s) {}
+
+template <class T>
+list<Node<T>*>* DepthSearcher<T>::search()
 {
     list<Node<T>*> grays; // visited nodes, but not finished
     list<Node<T>*> blacks; // finished nodes (by default, all nodes start as "white")
     m_nodes = 1;
-    return visit(searchable, grays, blacks, searchable->getStart());
+    return visit(this->m_searchable, grays, blacks, this->m_searchable->getStart());
 }
 
 template <class T>
@@ -38,9 +40,9 @@ list<Node<T>*>* DepthSearcher<T>::visit(Searchable<T> *searchable, list<Node<T> 
     grays.remove(node);
     blacks.push_back(node);
 
-    if (grays.empty()) { // all reachable nodes visited without reaching the end node
-        return nullptr;
-    }
+    //if (grays.empty()) { // all reachable nodes visited without reaching the end node
+      //  return nullptr;
+    //}
 }
 
 template <class T>

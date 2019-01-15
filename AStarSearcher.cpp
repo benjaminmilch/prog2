@@ -1,7 +1,10 @@
 #include "AStarSearcher.h"
 
 template <class T>
-list<Node<T>*>* AStarSearcher<T>::search(Searchable<T> *searchable)
+AStarSearcher<T>::AStarSearcher(Searchable<T> *s) : GeneralSearcher<T>(s) {}
+
+template <class T>
+list<Node<T>*>* AStarSearcher<T>::search()
 {
 
 }
@@ -13,7 +16,7 @@ int AStarSearcher<T>::getNumberOfNodesInSolution()
 }
 
 template <class T>
-list<Node<T>*>* AStarSearcher<T>::visit(Searchable<T> *searchable, Node<T> *node)
+list<Node<T>*>* AStarSearcher<T>::visit(Node<T> *node)
 {
 
 }

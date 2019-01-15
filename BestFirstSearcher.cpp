@@ -1,10 +1,14 @@
 #include "BestFirstSearcher.h"
 
+
 template <class T>
-list<Node<T>*>* BestFirstSearcher<T>::search(Searchable<T> *searchable)
+BestFirstSearcher<T>::BestFirstSearcher(Searchable<T> *s) : GeneralSearcher<T>(s) {}
+
+template <class T>
+list<Node<T>*>* BestFirstSearcher<T>::search()
 {
     m_nodes = 1;
-    return visit(searchable, searchable->getStart());
+    return visit(this->m_searchable, this->m_searchable->getStart());
 }
 
 template <class T>

@@ -1,7 +1,6 @@
 #ifndef PROG2_MATRIX_H
 #define PROG2_MATRIX_H
 
-#include "Node.h"
 #include "Searchable.h"
 #include <vector>
 

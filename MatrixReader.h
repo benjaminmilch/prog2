@@ -1,9 +1,9 @@
 #ifndef PROG2_MATRIXREADER_H
 #define PROG2_MATRIXREADER_H
 
+#include "Matrix.h"
 #include <string>
 #include <vector>
-#include "Matrix.h"
 
 using namespace std;
 class MatrixReader {

@@ -1,16 +1,17 @@
 #ifndef PROG2_ASTARSEARCHER_H
 #define PROG2_ASTARSEARCHER_H
 
-#include "Searcher.h"
+#include "GeneralSearcher.h"
 
 template <class T>
-class AStarSearcher : public Searcher<T> {
+class AStarSearcher : public GeneralSearcher<T> {
     int m_nodes;
 public:
-    list<Node<T>*>* search(Searchable<T> *searchable) override;
+    explicit AStarSearcher(Searchable<T> *s);
+    list<Node<T>*>* search() override;
     int getNumberOfNodesInSolution() override;
 private:
-    list<Node<T>*>* visit(Searchable<T> *searchable, Node<T> *node);
+    list<Node<T>*>* visit(Node<T> *node);
     bool isWhite(Node<T> *node);
 };
 

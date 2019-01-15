@@ -1,7 +1,3 @@
-//
-// Created by ben on 1/13/19.
-//
-
 #include "Matrix.h"
 
 Matrix::Matrix(unsigned long rows, unsigned long columns)
@@ -10,13 +6,14 @@ Matrix::Matrix(unsigned long rows, unsigned long columns)
     m_columns = columns;
     m_row_nodes = new vector<vector<Node<string>*>*>;
 
-    for (int row = 0; row < m_columns; row++) {
+   /* for (int row = 0; row < m_columns; row++) {
         auto *matrix_rows = new vector<Node<string>*>;
         m_row_nodes->push_back(matrix_rows);
         for (int col = 0; col < m_rows; col++) {
-            matrix_rows->push_back(new Node<string>(to_string(row) + "," + to_string(col)));
+            Node<string> *node = new Node<string>(to_string(row) + "," + to_string(col));
+            matrix_rows->push_back(node);
         }
-    }
+    }*/
 }
 
 void Matrix::addRow(vector<Node<string> *> *row)
@@ -47,7 +44,7 @@ list<Node<string>*>* Matrix::getAdjacent(Node<string> *node)
 {
     unsigned long row = getRowIndex(node);
     unsigned long column = getColumnIndex(node);
-    auto *adjacent_nodes = new vector<Node<string>*>;
+    auto *adjacent_nodes = new list<Node<string>*>;
     // maintain the rule of (down, right, up, left) for direction order
     if (row == 1) {
         if (column == 1) {

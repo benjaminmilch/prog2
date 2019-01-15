@@ -1,4 +1,5 @@
 #include "MatrixReader.h"
+#include "Node.h"
 #include <iostream>
 
 Matrix* MatrixReader::createMatrix()
@@ -30,17 +31,19 @@ Matrix* MatrixReader::createMatrix()
     matrix->setEnd(stoul(matrix_input[size - 5]), stoul(matrix_input[size - 4]));
 
     index = 0; // starting index for Node cost
-    auto *row = new vector<Node<string>*>;
+    vector<Node<string>*> row;
     // loop through all rows and columns, create the appropriate Node, then add to Matrix
     for (unsigned long r = 1; r <= rows; r++) {
-        row->clear();
         for (unsigned long c = 1; c <= columns; c++) {
-            row->push_back(new Node<string>(to_string(r) + "," + to_string(c)));
-            row->back()->setCost(stod(matrix_input[index]));
+            Node<string> *n = new Node<string>(to_string(r) + "," + to_string(c));
+            row.push_back(n);
+            row.back()->setCost(stod(matrix_input[index]));
             index++;
         }
-        matrix->addRow(row);
+        matrix->addRow(&row);
         index++;
+        row.clear();
+
     }
 
     return matrix;

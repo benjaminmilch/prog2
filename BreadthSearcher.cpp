@@ -2,10 +2,13 @@
 #include <queue>
 
 template <class T>
-list<Node<T>*>* BreadthSearcher<T>::search(Searchable<T> *searchable)
+BreadthSearcher<T>::BreadthSearcher(Searchable<T> *s) : GeneralSearcher<T>(s) {}
+
+template <class T>
+list<Node<T>*>* BreadthSearcher<T>::search()
 {
     m_nodes = 1;
-    return visit(searchable, searchable->getStart());
+    return visit(this->searchable, this->searchable->getStart());
 }
 
 template <class T>
