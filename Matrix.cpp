@@ -5,15 +5,6 @@ Matrix::Matrix(unsigned long rows, unsigned long columns)
     m_rows = rows;
     m_columns = columns;
     m_row_nodes = new vector<vector<Node<string>*>*>;
-
-   /* for (int row = 0; row < m_columns; row++) {
-        auto *matrix_rows = new vector<Node<string>*>;
-        m_row_nodes->push_back(matrix_rows);
-        for (int col = 0; col < m_rows; col++) {
-            Node<string> *node = new Node<string>(to_string(row) + "," + to_string(col));
-            matrix_rows->push_back(node);
-        }
-    }*/
 }
 
 void Matrix::addRow(vector<Node<string> *> *row)
@@ -46,22 +37,22 @@ list<Node<string>*>* Matrix::getAdjacent(Node<string> *node)
     unsigned long column = getColumnIndex(node);
     auto *adjacent_nodes = new list<Node<string>*>;
     // maintain the rule of (down, right, up, left) for direction order
-    if (row == 1) {
-        if (column == 1) {
+    if (row == 0) { // top row of matrix
+        if (column == 0) { // left column of matrix
             if (m_row_nodes->at(row + 1)->at(column)->getCost() != -1) {
                 adjacent_nodes->push_back(m_row_nodes->at(row + 1)->at(column)); // below node
             }
             if (m_row_nodes->at(row)->at(column + 1)->getCost() != -1) {
                 adjacent_nodes->push_back(m_row_nodes->at(row)->at(column + 1)); // right of node
             }
-        } else if (column == m_columns) {
+        } else if (column == m_columns - 1) { // right column of matrix
             if (m_row_nodes->at(row + 1)->at(column)->getCost() != -1) {
                 adjacent_nodes->push_back(m_row_nodes->at(row + 1)->at(column)); // below node
             }
             if (m_row_nodes->at(row)->at(column - 1)->getCost() != -1) {
                 adjacent_nodes->push_back(m_row_nodes->at(row)->at(column - 1)); // left of node
             }
-        } else {
+        } else { // one of the middle columns of the matrix
             if (m_row_nodes->at(row + 1)->at(column)->getCost() != -1) {
                 adjacent_nodes->push_back(m_row_nodes->at(row + 1)->at(column)); // below node
             }
@@ -72,22 +63,22 @@ list<Node<string>*>* Matrix::getAdjacent(Node<string> *node)
                 adjacent_nodes->push_back(m_row_nodes->at(row)->at(column - 1)); // left of node
             }
         }
-    } else if (row == m_rows) {
-        if (column == 1) {
+    } else if (row == m_rows - 1) { // bottom row of the matrix
+        if (column == 0) { // left column of the matrix
             if (m_row_nodes->at(row)->at(column + 1)->getCost() != -1) {
                 adjacent_nodes->push_back(m_row_nodes->at(row)->at(column + 1)); // right of node
             }
             if (m_row_nodes->at(row - 1)->at(column)->getCost() != -1) {
                 adjacent_nodes->push_back(m_row_nodes->at(row - 1)->at(column)); // above node
             }
-        } else if (column == m_columns) {
+        } else if (column == m_columns - 1) { // right column of the matrix
             if (m_row_nodes->at(row - 1)->at(column)->getCost() != -1) {
                 adjacent_nodes->push_back(m_row_nodes->at(row - 1)->at(column)); // above node
             }
             if (m_row_nodes->at(row)->at(column - 1)->getCost() != -1) {
                 adjacent_nodes->push_back(m_row_nodes->at(row)->at(column - 1)); // left of node
             }
-        } else {
+        } else { // one of the middle columns of the matrix
             if (m_row_nodes->at(row)->at(column + 1)->getCost() != -1) {
                 adjacent_nodes->push_back(m_row_nodes->at(row)->at(column + 1)); // right of node
             }
@@ -98,25 +89,31 @@ list<Node<string>*>* Matrix::getAdjacent(Node<string> *node)
                 adjacent_nodes->push_back(m_row_nodes->at(row)->at(column - 1)); // left of node
             }
         }
-    } else {
-        if (m_row_nodes->at(row + 1)->at(column)->getCost() != -1) {
-            adjacent_nodes->push_back(m_row_nodes->at(row + 1)->at(column)); // below node
-        }
-        if (column == 1) {
+    } else { // one of the middle rows of the matrix
+        if (column == 0) { // left column of the matrix
+            if (m_row_nodes->at(row + 1)->at(column)->getCost() != -1) {
+                adjacent_nodes->push_back(m_row_nodes->at(row + 1)->at(column)); // below node
+            }
             if (m_row_nodes->at(row)->at(column + 1)->getCost() != -1) {
                 adjacent_nodes->push_back(m_row_nodes->at(row)->at(column + 1)); // right of node
             }
             if (m_row_nodes->at(row - 1)->at(column)->getCost() != -1) {
                 adjacent_nodes->push_back(m_row_nodes->at(row - 1)->at(column)); // above node
             }
-        } else if (column == m_columns) {
+        } else if (column == m_columns - 1) { // right column of the matrix
+            if (m_row_nodes->at(row + 1)->at(column)->getCost() != -1) {
+                adjacent_nodes->push_back(m_row_nodes->at(row + 1)->at(column)); // below node
+            }
             if (m_row_nodes->at(row - 1)->at(column)->getCost() != -1) {
                 adjacent_nodes->push_back(m_row_nodes->at(row - 1)->at(column)); // above node
             }
             if (m_row_nodes->at(row)->at(column - 1)->getCost() != -1) {
                 adjacent_nodes->push_back(m_row_nodes->at(row)->at(column - 1)); // left of node
             }
-        } else {
+        } else { // one of the middle columns of the matrix
+            if (m_row_nodes->at(row + 1)->at(column)->getCost() != -1) {
+                adjacent_nodes->push_back(m_row_nodes->at(row + 1)->at(column)); // below node
+            }
             if (m_row_nodes->at(row)->at(column + 1)->getCost() != -1) {
                 adjacent_nodes->push_back(m_row_nodes->at(row)->at(column + 1)); // right of node
             }
@@ -124,7 +121,7 @@ list<Node<string>*>* Matrix::getAdjacent(Node<string> *node)
                 adjacent_nodes->push_back(m_row_nodes->at(row - 1)->at(column)); // above node
             }
             if (m_row_nodes->at(row)->at(column - 1)->getCost() != -1) {
-                adjacent_nodes->push_back(m_row_nodes->at(row)->at(column - 1)); //left of node
+                adjacent_nodes->push_back(m_row_nodes->at(row)->at(column - 1)); // left of node
             }
         }
     }
