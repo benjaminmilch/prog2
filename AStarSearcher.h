@@ -8,7 +8,7 @@ template <class T>
 class AStarSearcher : public GeneralSearcher<T> {
     int m_nodes;
 public:
-    list<Node<T>*>* search(Searchable<T> *searchable) override;
+    string search(Searchable<T> *searchable) override;
     int getNumberOfNodesInSolution() override;
 private:
     bool isFlagged(Node<T> *node, list<Node<T>*> open, list<Node<T>*> closed);
@@ -16,8 +16,9 @@ private:
 };
 
 template <class T>
-list<Node<T>*>* AStarSearcher<T>::search(Searchable<T> *searchable)
+string AStarSearcher<T>::search(Searchable<T> *searchable)
 {
+    string solution = "-1";
     list<Node<T>*> open; // nodes to be checked
     list<Node<T>*> closed; // checked nodes
     Node<T> *start = searchable->getStart();
@@ -32,9 +33,14 @@ list<Node<T>*>* AStarSearcher<T>::search(Searchable<T> *searchable)
         closed.push_back(current);
         list<Node<T>*> adjacent = *(searchable->getAdjacent(current));
         for (Node<T>* &adj : adjacent) {
-            if (adj->equals(end)) {
+            if (adj->equals(end)) { // stopping condition
                 end->setPrevious(current);
-                return this->savePath(searchable, end);
+                vector<Node<T>*> path = this->savePath(searchable, adj);
+                solution.clear();
+                for (unsigned long i = 0; i < path.size() - 1; i++) {
+                    solution.append(searchable->getDirection(path.at(i), path.at(i + 1)));
+                }
+                return solution;
             }
 
             if (!isFlagged(adj, open, closed)) { // new node encountered
@@ -69,7 +75,7 @@ list<Node<T>*>* AStarSearcher<T>::search(Searchable<T> *searchable)
         }
     }
 
-    return nullptr;
+    return solution;
 }
 
 template <class T>

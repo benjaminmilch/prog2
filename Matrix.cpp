@@ -186,15 +186,49 @@ unsigned long Matrix::getColumnIndex(Node<string> *node)
     return stoul(column);
 }
 
-string* Matrix::SearchableToString()
+string Matrix::SearchableToString()
 {
-    auto* matrix = new string();
+    string matrix;
+    unsigned long j = 0;
     for (unsigned long i = 0; i < m_row_nodes->size(); i++) {
-        for (unsigned long j = 0; j < m_row_nodes->at(i)->size(); j++) {
-            matrix->append(to_string(m_row_nodes->at(i)->at(j)->getCost()) + " ");
+        for (j = 0; j < m_row_nodes->at(i)->size() -1; j++) {
+            matrix.append(to_string(m_row_nodes->at(i)->at(j)->getCost()) + ",");
         }
-        matrix->append("\n");
+        matrix.append(to_string(m_row_nodes->at(i)->at(j)->getCost()) + "\n");
     }
-
+    matrix.append(getStart()->getNode() + "\n");
+    matrix.append(getEnd()->getNode());
     return matrix;
 }
+
+string Matrix::getDirection(Node<string> *start, Node<string> *end)
+{
+    string direction;
+    unsigned long start_row = getRowIndex(start);
+    unsigned long start_column = getColumnIndex(start);
+    unsigned long end_row = getRowIndex(end);
+    unsigned long end_column = getColumnIndex(end);
+
+    if (start_row == end_row) { // nodes are in the same row
+        if (start_column < end_column) { // start is to the left of end
+            direction = "Right";
+        } else {
+            direction = "Left";
+        }
+    } else { // nodes are 1 row apart
+        if (start_row < end_row) { // start is above end
+            direction = "Down";
+        } else {
+            direction = "Up";
+        }
+    }
+    if (end->getNode() != getEnd()->getNode()) {
+        direction.append(",");
+    }
+    return direction;
+}
+
+bool Matrix::operator==(Searchable<string>* searchable) {
+    return this->SearchableToString() == searchable->SearchableToString();
+}
+

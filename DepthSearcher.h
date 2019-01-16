@@ -9,15 +9,15 @@ template <class T>
 class DepthSearcher : virtual public GeneralSearcher<T> {
     int m_nodes;
 public:
-    list<Node<T>*>* search(Searchable<T> *searchable) override;
+    string search(Searchable<T> *searchable) override;
     int getNumberOfNodesInSolution() override;
 private:
-    list<Node<T>*>* visit(Searchable<T> *searchable, list<Node<T>*> grays, list<Node<T>*> blacks, Node<T> *node);
+    string visit(Searchable<T> *searchable, list<Node<T>*> grays, list<Node<T>*> blacks, Node<T> *node);
     bool isWhite(list<Node<T>*> grays, list<Node<T>*> blacks, Node<T> *node);
 };
 
 template <class T>
-list<Node<T>*>* DepthSearcher<T>::search(Searchable<T> *searchable)
+string DepthSearcher<T>::search(Searchable<T> *searchable)
 {
     list<Node<T>*> grays; // visited nodes, but not finished
     list<Node<T>*> blacks; // finished nodes (by default, all nodes start as "white")
@@ -32,13 +32,18 @@ int DepthSearcher<T>::getNumberOfNodesInSolution()
 }
 
 template <class T>
-list<Node<T>*>* DepthSearcher<T>::visit(Searchable<T> *searchable, list<Node<T> *> grays,
+string DepthSearcher<T>::visit(Searchable<T> *searchable, list<Node<T> *> grays,
                                         list<Node<T> *> blacks, Node<T> *node)
 {
     grays.push_back(node); // mark node as "visited" (gray)
-
+    string solution = "-1";
     if (node->equals(searchable->getEnd())) { // stopping condition
-        return this->savePath(searchable, node);
+        vector<Node<T>*> path = this->savePath(searchable, node);
+        solution.clear();
+        for (unsigned long i = 0; i < path.size() - 1; i++) {
+            solution.append(searchable->getDirection(path.at(i), path.at(i + 1)));
+        }
+        return solution;
     }
 
     list<Node<T>*> adjacent = *(searchable->getAdjacent(node));
@@ -53,9 +58,7 @@ list<Node<T>*>* DepthSearcher<T>::visit(Searchable<T> *searchable, list<Node<T> 
     grays.remove(node);
     blacks.push_back(node);
 
-   // if () { // all reachable nodes visited without reaching the end node
-      //return nullptr;
-    //}
+   return solution;
 }
 
 template <class T>

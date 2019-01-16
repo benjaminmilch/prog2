@@ -16,17 +16,20 @@ void MyParallelServer::open(int port, ClientHandler *c) {
     int threadIndex = 0;
     clientsSock = accept().sock_fd;
     vector<thread> threads;
-    threads[threadIndex] = thread(ClientThread, clientsSock, c);
+    threads.push_back(thread(ClientThread, clientsSock, c));
     bool running = true;
     while (running) {
         threadIndex++;
         setTimeOut(1);
         try {
-            threads[threadIndex] = thread(ClientThread, clientsSock, c);
+            clientsSock = accept().sock_fd;
+            threads.push_back(thread(ClientThread, clientsSock, c));
         } catch (timeout_exception) {
             running = false;
-            for (int i = 0; i<threadIndex;i++){
-                threads[i].join();
+            for (int i = 0; i < threadIndex; i++) {
+                if (threads[i].joinable()) {
+                    threads[i].join();
+                }
             }
         }
     }

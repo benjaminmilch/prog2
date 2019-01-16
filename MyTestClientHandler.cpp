@@ -28,17 +28,17 @@ void MyTestClientHandler::handleClient(int sock) {
             ::close(sock);
             break;
         }
-
-        if (m_manager->isSolutionExist(buffer)) {
-            string solution = m_manager->getSolution(buffer);
+        string buf = buffer;
+        if (m_manager->isSolutionExist(&buf)) {
+            string solution = m_manager->getSolution(&buf);
             n = write(sock, solution.c_str(), solution.length());
             if (n < 0) {
                 perror("ERROR writing to socket");
                 exit(1);
             }
         } else {
-            string solution = m_solver->solve(buffer);
-            m_manager->saveSolution(buffer, solution);
+            string solution = m_solver->solve(&buf);
+            m_manager->saveSolution(&buf, solution);
             n = write(sock, solution.c_str(), solution.length());
             if (n < 0) {
                 perror("ERROR writing to socket");

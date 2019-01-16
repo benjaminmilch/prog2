@@ -8,17 +8,17 @@ template <class T>
 class BestFirstSearcher : virtual public GeneralSearcher<T> {
     int m_nodes;
 public:
-    list<Node<T>*>* search(Searchable<T> *searchable) override;
+    string search(Searchable<T> *searchable) override;
     int getNumberOfNodesInSolution() override;
 private:
-    list<Node<T>*>* visit(Searchable<T> *searchable, Node<T> *node);
+    string visit(Searchable<T> *searchable, Node<T> *node);
     bool isWhite(list<Node<T>*> open, list<Node<T>*> closed, Node<T> *node);
     void mergeSort(vector<Node<T>*> &open, unsigned long first, unsigned long last);
     void merge(vector<Node<T>*> &open, unsigned long first, unsigned long middle, unsigned long last);
 };
 
 template <class T>
-list<Node<T>*>* BestFirstSearcher<T>::search(Searchable<T> *searchable)
+string BestFirstSearcher<T>::search(Searchable<T> *searchable)
 {
     m_nodes++;
     return visit(searchable, searchable->getStart());
@@ -31,8 +31,9 @@ int BestFirstSearcher<T>::getNumberOfNodesInSolution()
 }
 
 template <class T>
-list<Node<T>*>* BestFirstSearcher<T>::visit(Searchable<T> *searchable, Node<T> *node)
+string BestFirstSearcher<T>::visit(Searchable<T> *searchable, Node<T> *node)
 {
+    string solution = "-1";
     list<Node<T>*> open;
     list<Node<T>*> closed;
     vector<Node<T>*> open_copy;
@@ -43,8 +44,14 @@ list<Node<T>*>* BestFirstSearcher<T>::visit(Searchable<T> *searchable, Node<T> *
         current = open.front();
         open.pop_front();
         closed.push_back(current);
-        if (current->equals(searchable->getEnd())) {
-            return this->savePath(searchable, current);
+
+        if (current->equals(searchable->getEnd())) { // stopping condition
+            vector<Node<T>*> path = this->savePath(searchable, current);
+            solution.clear();
+            for (unsigned long i = 0; i < path.size() - 1; i++) {
+                solution.append(searchable->getDirection(path.at(i), path.at(i + 1)));
+            }
+            return solution;
         }
 
         list<Node<T>*> adjacent = *(searchable->getAdjacent(current));
@@ -65,7 +72,7 @@ list<Node<T>*>* BestFirstSearcher<T>::visit(Searchable<T> *searchable, Node<T> *
         }
         open_copy.clear();
     }
-    return nullptr; // all reachable nodes visited without reaching the end node
+    return solution; // all reachable nodes visited without reaching the end node
 }
 
 template <class T>

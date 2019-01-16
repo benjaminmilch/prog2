@@ -23,24 +23,21 @@ FileCacheManager::FileCacheManager() {
             val += line[i];
             i++;
         }
-        m_ps_map.insert({key, val});
+        m_ps_map.insert({&key, val});
     }
     file.close();
 }
 
-void FileCacheManager::saveSolution(const string p, const string s) {
-    m_ps_map[p] = s;
+bool FileCacheManager::isSolutionExist(string* p) const {
+    return GeneralCacheManager::isSolutionExist(p);
 }
 
-string FileCacheManager::getSolution(const string p) const {
-    return m_ps_map.at(p);
+string FileCacheManager::getSolution(string* p) const {
+    return GeneralCacheManager::getSolution(p);
 }
 
-bool FileCacheManager::isSolutionExist(const string p) const{
-    return (m_ps_map.find(p) != m_ps_map.end());
-}
-
-void FileCacheManager::save() {
+void FileCacheManager::saveSolution(string* p, string s) {
+    GeneralCacheManager::saveSolution(p, s);
     ofstream file;
     file.open("fileCache.txt");
     if (file.fail()) {
@@ -48,11 +45,6 @@ void FileCacheManager::save() {
         exit(1);
     }
 
-    file.clear();
-
-    for (auto i: m_ps_map) {
-        file << i.first + '|' + i.second << endl;
-    }
-
+    file << *p + '|' + s << endl;
     file.close();
 }

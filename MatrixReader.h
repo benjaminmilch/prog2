@@ -7,7 +7,9 @@
 
 using namespace std;
 class MatrixReader {
+    vector<string> m_input;
 public:
+    void receiveInput(string input);
     Matrix* createMatrix();
     vector<string> lineSplit(string line);
 };

@@ -9,7 +9,7 @@ using namespace std;
 template <class T>
 class Searcher {
 public:
-    virtual list<Node<T>*>* search(Searchable<T> *searchable) = 0;
+    virtual string search(Searchable<T> *searchable) = 0;
     virtual int getNumberOfNodesInSolution() = 0;
 };
 
