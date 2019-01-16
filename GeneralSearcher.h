@@ -20,6 +20,7 @@ list<Node<T>*>* GeneralSearcher<T>::savePath(Searchable<T>* searchable, Node<T> 
         current = current->getPrevious();
     }
     solution->push_back(searchable->getStart());
+
     solution->reverse();
     return solution;
 }
