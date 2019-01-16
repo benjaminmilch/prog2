@@ -8,8 +8,7 @@ template <class T>
 class BestFirstSearcher : virtual public GeneralSearcher<T> {
     int m_nodes;
 public:
-    explicit BestFirstSearcher(Searchable<T> *s);
-    list<Node<T>*>* search() override;
+    list<Node<T>*>* search(Searchable<T> *searchable) override;
     int getNumberOfNodesInSolution() override;
 private:
     list<Node<T>*>* visit(Searchable<T> *searchable, Node<T> *node);
@@ -19,16 +18,10 @@ private:
 };
 
 template <class T>
-BestFirstSearcher<T>::BestFirstSearcher(Searchable<T> *s) : GeneralSearcher<T>(s)
-{
-    m_nodes = 0;
-}
-
-template <class T>
-list<Node<T>*>* BestFirstSearcher<T>::search()
+list<Node<T>*>* BestFirstSearcher<T>::search(Searchable<T> *searchable)
 {
     m_nodes++;
-    return visit(this->m_searchable, this->m_searchable->getStart());
+    return visit(searchable, searchable->getStart());
 }
 
 template <class T>
@@ -51,11 +44,11 @@ list<Node<T>*>* BestFirstSearcher<T>::visit(Searchable<T> *searchable, Node<T> *
         open.pop_front();
         closed.push_back(current);
         if (current->equals(searchable->getEnd())) {
-            return this->savePath(current);
+            return this->savePath(searchable, current);
         }
 
-        list<Node<string>*> adjacent = *(searchable->getAdjacent(current));
-        for (Node<string>* &adj : adjacent) {
+        list<Node<T>*> adjacent = *(searchable->getAdjacent(current));
+        for (Node<T>* &adj : adjacent) {
             if (isWhite(open, closed, adj)) {
                 open.push_back(adj);
                 adj->setPrevious(current);

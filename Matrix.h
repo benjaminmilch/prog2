@@ -13,9 +13,11 @@ public:
     void addRow(vector<Node<string>*> *row);
     void setStart(unsigned long row, unsigned long column);
     void setEnd(unsigned long row, unsigned long column);
+    void setNodeHeuristics();
     Node<string>* getStart() override;
     Node<string>* getEnd() override;
     list<Node<string>*> *getAdjacent(Node<string> *node) override;
+    string* SearchableToString() override;
 private:
     unsigned long getRowIndex(Node<string> *node);
     unsigned long getColumnIndex(Node<string> *node);

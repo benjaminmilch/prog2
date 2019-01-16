@@ -4,18 +4,27 @@
 template <class T>
 class Node {
     T m_node;
-    double m_cost;
+    int m_cost;
+    int m_g_cost;
+    unsigned long m_heuristic;
+    int m_f_value;
     Node<T>* m_previous;
 public:
     explicit Node(T node);
     void setPrevious(Node<T>* previous);
-    void setCost(double cost);
+    void setCost(int cost);
+    void setGCost(int g);
+    void setHeuristic(unsigned long heuristic);
+    void setFValue(int f);
     T getNode();
-    double getCost();
+    int getCost();
+    int getGCost();
+    int getHeuristic();
+    int getFValue();
     Node<T>* getPrevious();
-    bool equals(Node<T> *node);
-    bool operator<(Node node); // compare COST
-    bool operator==(Node node); // compare COST
+    bool equals(Node<T> *node); // compare NODE members
+    bool operator<(Node node); // compare COST members
+    bool operator==(Node node); // compare COST members
 };
 
 template <class T>
@@ -23,13 +32,34 @@ Node<T>::Node(T node)
 {
     m_node = node;
     m_cost = 0;
+    m_g_cost = 0;
+    m_heuristic = 0;
+    m_f_value = 0;
     m_previous = nullptr;
 }
 
 template <class T>
-void Node<T>::setCost(double cost)
+void Node<T>::setCost(int cost)
 {
     m_cost = cost;
+}
+
+template <class T>
+void Node<T>::setGCost(int g)
+{
+    m_g_cost = g;
+}
+
+template <class T>
+void Node<T>::setHeuristic(unsigned long heuristic)
+{
+    m_heuristic = heuristic;
+}
+
+template <class T>
+void Node<T>::setFValue(int f)
+{
+    m_f_value = f;
 }
 
 template <class T>
@@ -45,9 +75,27 @@ void Node<T>::setPrevious(Node<T>* previous)
 }
 
 template <class T>
-double Node<T>::getCost()
+int Node<T>::getCost()
 {
     return m_cost;
+}
+
+template <class T>
+int Node<T>::getGCost()
+{
+    return m_g_cost;
+}
+
+template <class T>
+int Node<T>::getHeuristic()
+{
+    return m_heuristic;
+}
+
+template <class T>
+int Node<T>::getFValue()
+{
+    return m_f_value;
 }
 
 template <class T>

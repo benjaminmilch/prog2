@@ -9,8 +9,7 @@ template <class T>
 class DepthSearcher : virtual public GeneralSearcher<T> {
     int m_nodes;
 public:
-    explicit DepthSearcher(Searchable<T> *s);
-    list<Node<T>*>* search() override;
+    list<Node<T>*>* search(Searchable<T> *searchable) override;
     int getNumberOfNodesInSolution() override;
 private:
     list<Node<T>*>* visit(Searchable<T> *searchable, list<Node<T>*> grays, list<Node<T>*> blacks, Node<T> *node);
@@ -18,17 +17,12 @@ private:
 };
 
 template <class T>
-DepthSearcher<T>::DepthSearcher(Searchable<T> *s) : GeneralSearcher<T>(s) {
-    m_nodes = 0;
-}
-
-template <class T>
-list<Node<T>*>* DepthSearcher<T>::search()
+list<Node<T>*>* DepthSearcher<T>::search(Searchable<T> *searchable)
 {
     list<Node<T>*> grays; // visited nodes, but not finished
     list<Node<T>*> blacks; // finished nodes (by default, all nodes start as "white")
     m_nodes++;
-    return visit(this->m_searchable, grays, blacks, this->m_searchable->getStart());
+    return visit(searchable, grays, blacks, searchable->getStart());
 }
 
 template <class T>
@@ -44,11 +38,11 @@ list<Node<T>*>* DepthSearcher<T>::visit(Searchable<T> *searchable, list<Node<T> 
     grays.push_back(node); // mark node as "visited" (gray)
 
     if (node->equals(searchable->getEnd())) { // stopping condition
-        return this->savePath(node);
+        return this->savePath(searchable, node);
     }
 
-    list<Node<string>*> adjacent = *(searchable->getAdjacent(node));
-    for (Node<string>* &adj : adjacent) {
+    list<Node<T>*> adjacent = *(searchable->getAdjacent(node));
+    for (Node<T>* &adj : adjacent) {
         if (isWhite(grays, blacks, adj)) {
             m_nodes++;
             adj->setPrevious(node);
@@ -59,7 +53,7 @@ list<Node<T>*>* DepthSearcher<T>::visit(Searchable<T> *searchable, list<Node<T> 
     grays.remove(node);
     blacks.push_back(node);
 
-    //if (grays.empty()) { // all reachable nodes visited without reaching the end node
+   // if () { // all reachable nodes visited without reaching the end node
       //return nullptr;
     //}
 }
@@ -67,8 +61,8 @@ list<Node<T>*>* DepthSearcher<T>::visit(Searchable<T> *searchable, list<Node<T> 
 template <class T>
 bool DepthSearcher<T>::isWhite(list<Node<T> *> grays, list<Node<T> *> blacks, Node<T> *node)
 {
-    return (find(grays.begin(), grays.end(), node) == grays.end()
-            && find(blacks.begin(), blacks.end(), node) == blacks.end());
+    return find(grays.begin(), grays.end(), node) == grays.end()
+           && find(blacks.begin(), blacks.end(), node) == blacks.end();
 }
 
 #endif //PROG2_DEPTHSEARCHER_H

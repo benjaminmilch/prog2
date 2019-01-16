@@ -34,7 +34,7 @@ Matrix* MatrixReader::createMatrix()
         auto *row = new vector<Node<string>*>;
         for (unsigned long c = 0; c < columns; c++) {
             Node<string> *n = new Node<string>(to_string(r) + "," + to_string(c));
-            n->setCost(stod(matrix_input[index]));
+            n->setCost(stoi(matrix_input[index]));
             row->push_back(n);
             index++;
         }
@@ -45,6 +45,8 @@ Matrix* MatrixReader::createMatrix()
     unsigned long size = matrix_input.size();
     matrix->setStart(stoul(matrix_input[size - 8]), stoul(matrix_input[size-7]));
     matrix->setEnd(stoul(matrix_input[size - 5]), stoul(matrix_input[size - 4]));
+
+    matrix->setNodeHeuristics();
 
     return matrix;
 }

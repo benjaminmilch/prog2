@@ -21,6 +21,34 @@ void Matrix::setEnd(unsigned long row, unsigned long column)
     m_end = m_row_nodes->at(row)->at(column);
 }
 
+void Matrix::setNodeHeuristics()
+{
+    unsigned long heuristic;
+    unsigned long row, column;
+    unsigned long end_row = getRowIndex(m_end) + 1;
+    unsigned long end_column = getColumnIndex(m_end) + 1;
+
+    for (unsigned long i = 0; i < m_row_nodes->size(); i++) {
+        for (unsigned long j = 0; j < m_row_nodes->at(i)->size(); j++) {
+            if (m_row_nodes->at(i)->at(j)->getCost() != -1) {
+                row = getRowIndex(m_row_nodes->at(i)->at(j)) + 1;
+                column = getColumnIndex(m_row_nodes->at(i)->at(j)) + 1;
+                if (row > end_row) {
+                    heuristic = row - end_row;
+                } else {
+                    heuristic = end_row - row;
+                }
+                if (column > end_row) {
+                    heuristic += (column - end_column);
+                } else {
+                    heuristic += (end_column - column);
+                }
+                m_row_nodes->at(i)->at(j)->setHeuristic(heuristic);
+            }
+        }
+    }
+}
+
 Node<string>* Matrix::getStart()
 {
     return m_start;
@@ -156,4 +184,17 @@ unsigned long Matrix::getColumnIndex(Node<string> *node)
         }
     }
     return stoul(column);
+}
+
+string* Matrix::SearchableToString()
+{
+    auto* matrix = new string();
+    for (unsigned long i = 0; i < m_row_nodes->size(); i++) {
+        for (unsigned long j = 0; j < m_row_nodes->at(i)->size(); j++) {
+            matrix->append(to_string(m_row_nodes->at(i)->at(j)->getCost()) + " ");
+        }
+        matrix->append("\n");
+    }
+
+    return matrix;
 }
